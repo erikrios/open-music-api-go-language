@@ -1,4 +1,4 @@
-package error
+package errors
 
 // BadRequest a struct for 400 Response Error
 type BadRequest struct {

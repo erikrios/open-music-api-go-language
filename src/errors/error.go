@@ -1,4 +1,4 @@
-package error
+package errors
 
 // Error an interface to define the Response Error
 type Error interface {

@@ -1,4 +1,4 @@
-package error
+package errors
 
 // NotFound a struct for 404 Response Error
 type NotFound struct {
