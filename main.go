@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/erikrios/open-music-api-go-language/src/api/home"
+	"github.com/erikrios/open-music-api-go-language/src/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"log"
@@ -41,8 +41,7 @@ func main() {
 
 	app := fiber.New()
 
-	app.Get("/swagger/*", swagger.Handler)
-
+	middleware.Init(app)
 	home.HomeRoutes(app)
 
 	url := os.Getenv("SERVER_URL")
