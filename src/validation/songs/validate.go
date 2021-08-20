@@ -1,12 +1,12 @@
 package songs
 
 import (
-	"github.com/erikrios/open-music-api-go-language/src/api/songs"
+	"github.com/erikrios/open-music-api-go-language/src/api/songs/payloads"
 	"github.com/erikrios/open-music-api-go-language/src/validation"
 	"github.com/go-playground/validator/v10"
 )
 
-func Validate(payload songs.Payload) []*validation.Error {
+func Validate(payload payloads.Payload) []*validation.Error {
 	var errors []*validation.Error
 	validate := validator.New()
 	if err := validate.Struct(payload); err != nil {

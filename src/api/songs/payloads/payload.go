@@ -1,4 +1,4 @@
-package songs
+package payloads
 
 import "time"
 
