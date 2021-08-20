@@ -23,7 +23,7 @@ definitions:
       status:
         type: string
     type: object
-host: localhost:8080
+host: localhost:3000
 info:
   contact:
     email: support@swagger.io
@@ -65,10 +65,6 @@ paths:
 schemes:
 - http
 securityDefinitions:
-  ApiKeyAuth:
-    in: header
-    name: Authorization
-    type: apiKey
   Bearer:
     in: header
     name: Authorization

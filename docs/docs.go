@@ -110,11 +110,6 @@ var doc = `{
         }
     },
     "securityDefinitions": {
-        "ApiKeyAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
-        },
         "Bearer": {
             "type": "apiKey",
             "name": "Authorization",
@@ -135,7 +130,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "localhost:8080",
+	Host:        "localhost:3000",
 	BasePath:    "/",
 	Schemes:     []string{"http"},
 	Title:       "Open Music API",
