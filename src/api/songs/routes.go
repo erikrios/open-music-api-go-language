@@ -8,4 +8,5 @@ func Routes(a *fiber.App) {
 	router.Get("/songs", getSongs)
 	router.Get("/songs/:id", getSong)
 	router.Put("/songs/:id", putSong)
+	router.Delete("/songs/:id", deleteSong)
 }

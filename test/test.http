@@ -32,3 +32,7 @@ Content-Type: application/json
   "genre": "Jazz",
   "duration": 100
 }
+
+###
+DELETE http://localhost:3000/songs/KqqfF-XswfHPz8QP
+Accept: application/json

@@ -104,3 +104,19 @@ func putSong(c *fiber.Ctx) error {
 		"message": "lagu berhasil diperbarui",
 	})
 }
+
+func deleteSong(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if err := service.DeleteSong(id); err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"status":  "fail",
+			"message": err.Message(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"status":  "success",
+		"message": "lagu berhasil dihapus",
+	})
+}
