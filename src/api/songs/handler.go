@@ -71,3 +71,36 @@ func getSong(c *fiber.Ctx) error {
 		},
 	})
 }
+
+func putSong(c *fiber.Ctx) error {
+	id := c.Params("id")
+	payload := new(payloads.Payload)
+
+	if err := c.BodyParser(payload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+
+	if errors := songs.Validate(*payload); errors != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status": "fail",
+			"message": fiber.Map{
+				"errors": errors,
+			},
+		})
+	}
+
+	if err := service.UpdateSong(id, payload.Title, payload.Year, payload.Performer, payload.Genre, payload.Duration); err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"status":  "fail",
+			"message": err.Message(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"status":  "success",
+		"message": "lagu berhasil diperbarui",
+	})
+}

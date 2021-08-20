@@ -20,3 +20,15 @@ Accept: application/json
 ###
 GET http://localhost:3000/songs/KqqfF-XswfHPz8QP
 Accept: application/json
+
+###
+PUT http://localhost:3000/songs/KqqfF-XswfHPz8QP
+Content-Type: application/json
+
+{
+  "title": "Historical Moment",
+  "year": 2021,
+  "performer": "Erik Rio Setiawan",
+  "genre": "Jazz",
+  "duration": 100
+}

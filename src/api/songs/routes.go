@@ -7,4 +7,5 @@ func Routes(a *fiber.App) {
 	router.Post("/songs", postSongs)
 	router.Get("/songs", getSongs)
 	router.Get("/songs/:id", getSong)
+	router.Put("/songs/:id", putSong)
 }
