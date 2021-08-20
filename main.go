@@ -10,9 +10,9 @@ func main() {
 	app := fiber.New()
 	home.HomeRoutes(app)
 
-	if err := app.Listen("3000"); err != nil {
+	if err := app.Listen(":3000"); err != nil {
 		fmt.Println("Failed to start the server:", err)
+	} else {
+		fmt.Println("Server starting on port", 3000)
 	}
-
-	fmt.Println("Server starting on port", 3000)
 }
