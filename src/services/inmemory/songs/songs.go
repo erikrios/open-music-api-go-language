@@ -8,19 +8,19 @@ import (
 )
 
 type Song struct {
-	Id         string        `json:"id"`
-	Title      string        `json:"title"`
-	Year       uint16        `json:"year"`
-	Performer  string        `json:"performer"`
-	Genre      string        `json:"genre"`
-	Duration   time.Duration `json:"duration"`
-	InsertedAt string        `json:"insertedAt"`
-	UpdatedAt  string        `json:"updatedAt"`
+	Id         string `json:"id"`
+	Title      string `json:"title"`
+	Year       uint16 `json:"year"`
+	Performer  string `json:"performer"`
+	Genre      string `json:"genre"`
+	Duration   uint16 `json:"duration"`
+	InsertedAt string `json:"insertedAt"`
+	UpdatedAt  string `json:"updatedAt"`
 }
 
 var songs = make([]Song, 0)
 
-func AddSong(title string, year uint16, performer string, genre string, duration time.Duration) string {
+func AddSong(title string, year uint16, performer string, genre string, duration uint16) string {
 	id, _ := nanoid.Generate(nanoid.DefaultAlphabet, 16)
 	insertedAt := time.Now().Format(time.RFC3339)
 	updatedAt := insertedAt
@@ -52,7 +52,7 @@ func GetSong(id string) (*Song, errors.Error) {
 	return nil, errors.NewNotFound(fmt.Sprintf("Song with id %s not found.", id))
 }
 
-func UpdateSong(id string, title string, year uint16, performer string, genre string, duration time.Duration) errors.Error {
+func UpdateSong(id string, title string, year uint16, performer string, genre string, duration uint16) errors.Error {
 	song, err := GetSong(id)
 
 	if err != nil {
