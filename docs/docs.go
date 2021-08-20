@@ -114,6 +114,11 @@ var doc = `{
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"
+        },
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

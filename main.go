@@ -26,7 +26,7 @@ import (
 // @query.collection.format multi
 // @schemes http
 
-// @securityDefinitions.apikey ApiKeyAuth
+// @securityDefinitions.apikey Bearer
 // @in header
 // @name Authorization
 

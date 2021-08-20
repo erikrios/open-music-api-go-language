@@ -69,4 +69,8 @@ securityDefinitions:
     in: header
     name: Authorization
     type: apiKey
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
