@@ -1,0 +1,9 @@
+package songs
+
+import "github.com/gofiber/fiber/v2"
+
+func Routes(a *fiber.App) {
+	router := a.Group("/")
+	router.Post("/songs", postSongs)
+	router.Get("/songs", getSongs)
+}
