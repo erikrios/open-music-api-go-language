@@ -7,7 +7,7 @@ type BadRequest struct {
 	statusCode uint16
 }
 
-// NewBadRequest is a function to create the instance of Bad Request struct
+// NewBadRequest is a function to create the instance of BadRequest struct
 func NewBadRequest(message string) BadRequest {
 	return BadRequest{
 		name:       "Bad Request",
