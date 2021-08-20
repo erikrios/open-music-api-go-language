@@ -16,3 +16,7 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/songs
 Accept: application/json
+
+###
+GET http://localhost:3000/songs/KqqfF-XswfHPz8QP
+Accept: application/json

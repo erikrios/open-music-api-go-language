@@ -54,3 +54,20 @@ func getSongs(c *fiber.Ctx) error {
 		},
 	})
 }
+
+func getSong(c *fiber.Ctx) error {
+	id := c.Params("id")
+	song, err := service.GetSong(id)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"status":  "fail",
+			"message": err.Message(),
+		})
+	}
+	return c.JSON(fiber.Map{
+		"status": "success",
+		"data": fiber.Map{
+			"song": song,
+		},
+	})
+}
