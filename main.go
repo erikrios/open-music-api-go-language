@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/erikrios/open-music-api-go-language/src/api/home"
+	"github.com/erikrios/open-music-api-go-language/src/api/songs"
 	"github.com/erikrios/open-music-api-go-language/src/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
@@ -43,6 +44,7 @@ func main() {
 
 	middleware.Init(app)
 	home.Routes(app)
+	songs.Routes(app)
 
 	url := os.Getenv("SERVER_URL")
 
