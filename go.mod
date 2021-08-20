@@ -8,6 +8,7 @@ require (
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/gofiber/fiber/v2 v2.17.0
+	github.com/joho/godotenv v1.3.0
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/swaggo/swag v1.7.1
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
