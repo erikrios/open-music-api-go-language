@@ -1,0 +1,72 @@
+basePath: /
+definitions:
+  home.Data:
+    properties:
+      message:
+        type: string
+    type: object
+  home.Error:
+    properties:
+      data:
+        $ref: '#/definitions/home.Data'
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  home.Success:
+    properties:
+      data:
+        $ref: '#/definitions/home.Data'
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: The API of Open Music.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Open Music API
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: get hello world message from the server
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/home.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/home.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/home.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/home.Error'
+      summary: Get hello world message
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
