@@ -42,7 +42,7 @@ func main() {
 	app := fiber.New()
 
 	middleware.Init(app)
-	home.HomeRoutes(app)
+	home.Routes(app)
 
 	url := os.Getenv("SERVER_URL")
 
