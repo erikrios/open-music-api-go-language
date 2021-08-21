@@ -47,7 +47,15 @@ func postSongs(c *fiber.Ctx) error {
 func getSongs(c *fiber.Ctx) error {
 	results := make([]fiber.Map, 0)
 
-	for _, song := range inMemoryService.GetSongs() {
+	allSongs, err := service.GetSongs()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": err.Message(),
+		})
+	}
+
+	for _, song := range allSongs {
 		result := fiber.Map{
 			"id":        song.Id,
 			"title":     song.Title,
