@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/erikrios/open-music-api-go-language/src/api/home"
 	"github.com/erikrios/open-music-api-go-language/src/api/songs"
+	"github.com/erikrios/open-music-api-go-language/src/database"
 	"github.com/erikrios/open-music-api-go-language/src/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
@@ -38,6 +39,12 @@ import (
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file")
+	}
+
+	if db, err := database.Db(); err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("%p", db)
 	}
 
 	app := fiber.New()
