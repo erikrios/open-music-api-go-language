@@ -2,7 +2,8 @@ package songs
 
 import (
 	"github.com/erikrios/open-music-api-go-language/src/api/songs/payloads"
-	service "github.com/erikrios/open-music-api-go-language/src/services/inmemory/songs"
+	inMemoryService "github.com/erikrios/open-music-api-go-language/src/services/inmemory/songs"
+	service "github.com/erikrios/open-music-api-go-language/src/services/postgresql/songs"
 	"github.com/erikrios/open-music-api-go-language/src/validation/songs"
 	"github.com/gofiber/fiber/v2"
 )
@@ -26,7 +27,14 @@ func postSongs(c *fiber.Ctx) error {
 		})
 	}
 
-	id := service.AddSong(payload.Title, payload.Year, payload.Performer, payload.Genre, payload.Duration)
+	id, err := service.AddSong(payload.Title, payload.Year, payload.Performer, payload.Genre, payload.Duration)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": err.Message(),
+		})
+	}
+
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"status":  "success",
 		"message": "Lagu berhasil ditambahkan",
@@ -39,7 +47,7 @@ func postSongs(c *fiber.Ctx) error {
 func getSongs(c *fiber.Ctx) error {
 	results := make([]fiber.Map, 0)
 
-	for _, song := range service.GetSongs() {
+	for _, song := range inMemoryService.GetSongs() {
 		result := fiber.Map{
 			"id":        song.Id,
 			"title":     song.Title,
@@ -57,7 +65,7 @@ func getSongs(c *fiber.Ctx) error {
 
 func getSong(c *fiber.Ctx) error {
 	id := c.Params("id")
-	song, err := service.GetSong(id)
+	song, err := inMemoryService.GetSong(id)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"status":  "fail",
@@ -92,7 +100,7 @@ func putSong(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := service.UpdateSong(id, payload.Title, payload.Year, payload.Performer, payload.Genre, payload.Duration); err != nil {
+	if err := inMemoryService.UpdateSong(id, payload.Title, payload.Year, payload.Performer, payload.Genre, payload.Duration); err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"status":  "fail",
 			"message": err.Message(),
@@ -108,7 +116,7 @@ func putSong(c *fiber.Ctx) error {
 func deleteSong(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	if err := service.DeleteSong(id); err != nil {
+	if err := inMemoryService.DeleteSong(id); err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"status":  "fail",
 			"message": err.Message(),
