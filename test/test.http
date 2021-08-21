@@ -8,9 +8,7 @@ Content-Type: application/json
 {
   "title": "Kau Terindah",
   "year": 2020,
-  "performer": "Erik",
-  "genre": "Indie",
-  "duration": "120"
+  "performer": "Erik"
 }
 
 ###
