@@ -21,7 +21,8 @@ type Song struct {
 var songs = make([]Song, 0)
 
 func AddSong(title string, year uint16, performer string, genre string, duration uint16) string {
-	id, _ := nanoid.Generate(nanoid.DefaultAlphabet, 16)
+	nanoidId, _ := nanoid.Generate(nanoid.DefaultAlphabet, 16)
+	id := fmt.Sprintf("song-%s", nanoidId)
 	insertedAt := time.Now().Format(time.RFC3339)
 	updatedAt := insertedAt
 
