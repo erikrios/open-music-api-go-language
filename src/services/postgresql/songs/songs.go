@@ -46,15 +46,15 @@ func AddSong(title string, year uint16, performer string, genre *string, duratio
 
 // GetSongs is a function to get songs in the database
 func GetSongs() ([]Song, errors.Error) {
-	statement := `SELECT id, title, year, performer, genre, duration, inserted_at, updated_at
-					FROM songs`
-
 	db, err := database.Db()
 	if err != nil {
 		fmt.Println(err)
 		fmt.Println(err)
 		return nil, errors.NewInternalServerError("Something went wrong.")
 	}
+
+	statement := `SELECT id, title, year, performer, genre, duration, inserted_at, updated_at
+					FROM songs`
 
 	rows, err := db.Query(statement)
 	if err != nil {
@@ -84,4 +84,62 @@ func GetSongs() ([]Song, errors.Error) {
 	}
 
 	return songs, nil
+}
+
+// GetSong is a function to get a song in the database by id
+func GetSong(id string) (*Song, errors.Error) {
+	db, err := database.Db()
+	if err != nil {
+		fmt.Println(err)
+		return nil, errors.NewInternalServerError("Something went wrong.")
+	}
+
+	statement := `SELECT id, title, year, performer, genre, duration, inserted_at, updated_at
+					FROM songs
+					WHERE id = $1`
+
+	row := db.QueryRow(statement, id)
+
+	var song Song
+	switch row.Scan(
+		&song.Id,
+		&song.Title,
+		&song.Year,
+		&song.Performer,
+		&song.Genre,
+		&song.Duration,
+		&song.InsertedAt,
+		&song.UpdatedAt,
+	) {
+	case sql.ErrNoRows:
+		return nil, errors.NewNotFound(fmt.Sprintf("Song with id %s not found.", id))
+	case nil:
+		return &song, nil
+	default:
+		fmt.Println(err)
+		return nil, errors.NewInternalServerError("Something went wrong.")
+	}
+}
+
+// exists is a function to check the existence of the song in the database
+func exists(id string) (bool, errors.Error) {
+	db, err := database.Db()
+	if err != nil {
+		fmt.Println(err)
+		return false, errors.NewInternalServerError("Something went wrong.")
+	}
+
+	statement := `SELECT COUNT (id) FROM songs WHERE id = $1`
+	row := db.QueryRow(statement, id)
+
+	var count uint8
+	switch err := row.Scan(&count); err {
+	case sql.ErrNoRows:
+		return false, nil
+	case nil:
+		return true, nil
+	default:
+		fmt.Println(err)
+		return false, errors.NewInternalServerError("Something went wrong.")
+	}
 }
