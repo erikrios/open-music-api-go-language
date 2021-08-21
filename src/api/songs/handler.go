@@ -12,8 +12,8 @@ func postSongs(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status":  "error",
-			"message": err.Error(),
+			"status":  "fail",
+			"message": "Invalid payload or request body.",
 		})
 	}
 
@@ -78,8 +78,8 @@ func putSong(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status":  "error",
-			"message": err.Error(),
+			"status":  "fail",
+			"message": "Invalid payload or request body.",
 		})
 	}
 

@@ -10,7 +10,7 @@ Content-Type: application/json
   "year": 2020,
   "performer": "Erik",
   "genre": "Indie",
-  "duration": 120
+  "duration": "120"
 }
 
 ###
