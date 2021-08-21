@@ -49,7 +49,6 @@ func GetSongs() ([]Song, errors.Error) {
 	db, err := database.Db()
 	if err != nil {
 		fmt.Println(err)
-		fmt.Println(err)
 		return nil, errors.NewInternalServerError("Something went wrong.")
 	}
 
