@@ -3,7 +3,6 @@ package songs
 import (
 	"github.com/erikrios/open-music-api-go-language/src/api/songs/payloads"
 	"github.com/erikrios/open-music-api-go-language/src/errors"
-	inMemoryService "github.com/erikrios/open-music-api-go-language/src/services/inmemory/songs"
 	service "github.com/erikrios/open-music-api-go-language/src/services/postgresql/songs"
 	"github.com/erikrios/open-music-api-go-language/src/validation/songs"
 	"github.com/gofiber/fiber/v2"
@@ -19,21 +18,18 @@ func postSongs(c *fiber.Ctx) error {
 		})
 	}
 
-	if errors := songs.Validate(*payload); errors != nil {
+	if err := songs.Validate(*payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status": "fail",
 			"message": fiber.Map{
-				"errors": errors,
+				"err": err,
 			},
 		})
 	}
 
 	id, err := service.AddSong(payload.Title, payload.Year, payload.Performer, payload.Genre, payload.Duration)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"status":  "error",
-			"message": err.Message(),
-		})
+		return errors.ErrorHandler(err, c)
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
@@ -50,10 +46,7 @@ func getSongs(c *fiber.Ctx) error {
 
 	allSongs, err := service.GetSongs()
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"status":  "error",
-			"message": err.Message(),
-		})
+		return errors.ErrorHandler(err, c)
 	}
 
 	for _, song := range allSongs {
@@ -76,20 +69,7 @@ func getSong(c *fiber.Ctx) error {
 	id := c.Params("id")
 	song, err := service.GetSong(id)
 	if err != nil {
-		var status string
-		var statusCode uint16
-		switch err.(type) {
-		case errors.NotFound:
-			status = "fail"
-			statusCode = fiber.StatusNotFound
-		case errors.InternalServerError:
-			status = "error"
-			statusCode = fiber.StatusInternalServerError
-		}
-		return c.Status(int(statusCode)).JSON(fiber.Map{
-			"status":  status,
-			"message": err.Message(),
-		})
+		return errors.ErrorHandler(err, c)
 	}
 	return c.JSON(fiber.Map{
 		"status": "success",
@@ -110,20 +90,17 @@ func putSong(c *fiber.Ctx) error {
 		})
 	}
 
-	if errors := songs.Validate(*payload); errors != nil {
+	if err := songs.Validate(*payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status": "fail",
 			"message": fiber.Map{
-				"errors": errors,
+				"err": err,
 			},
 		})
 	}
 
-	if err := inMemoryService.UpdateSong(id, payload.Title, payload.Year, payload.Performer, payload.Genre, payload.Duration); err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"status":  "fail",
-			"message": err.Message(),
-		})
+	if err := service.UpdateSong(id, payload.Title, payload.Year, payload.Performer, payload.Genre, payload.Duration); err != nil {
+		return errors.ErrorHandler(err, c)
 	}
 
 	return c.JSON(fiber.Map{
@@ -135,11 +112,8 @@ func putSong(c *fiber.Ctx) error {
 func deleteSong(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	if err := inMemoryService.DeleteSong(id); err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"status":  "fail",
-			"message": err.Message(),
-		})
+	if err := service.DeleteSong(id); err != nil {
+		return errors.ErrorHandler(err, c)
 	}
 
 	return c.JSON(fiber.Map{
