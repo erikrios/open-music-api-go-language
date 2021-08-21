@@ -56,11 +56,13 @@ func GetSong(id string) (*Song, errors.Error) {
 func UpdateSong(id string, title string, year uint16, performer string, genre *string, duration *uint16) errors.Error {
 	for i, song := range songs {
 		if id == song.Id {
+			updatedAt := time.Now().Format(time.RFC3339)
 			songs[i].Title = title
 			songs[i].Year = year
 			songs[i].Performer = performer
 			songs[i].Genre = genre
 			songs[i].Duration = duration
+			songs[i].UpdatedAt = updatedAt
 			return nil
 		}
 	}
