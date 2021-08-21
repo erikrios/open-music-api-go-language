@@ -11,5 +11,5 @@ CREATE TABLE songs
     genre       TEXT,
     duration    TEXT,
     inserted_at TEXT    NOT NULL,
-    updated_at  TEXT    NOT NULL,
+    updated_at  TEXT    NOT NULL
 );
