@@ -118,8 +118,10 @@ func UpdateSong(id string, title string, year uint16, performer string, genre *s
 		return errors.NewInternalServerError("Something went wrong.")
 	}
 
-	statement := `UPDATE songs SET title = $2, year = $3, performer = $4, genre = $5, duration = $6 WHERE id = $1`
-	result, err := db.Exec(statement, id, title, year, performer, genre, duration)
+	updatedAt := time.Now().Format(time.RFC3339)
+
+	statement := `UPDATE songs SET title = $2, year = $3, performer = $4, genre = $5, duration = $6, updated_at = &7 WHERE id = $1`
+	result, err := db.Exec(statement, id, title, year, performer, genre, duration, updatedAt)
 	if err != nil {
 		return errors.NewInternalServerError("Something went wrong.")
 	}
