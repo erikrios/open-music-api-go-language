@@ -8,7 +8,23 @@ import (
 	"strconv"
 )
 
-func Connect() (*sql.DB, error) {
+var database *sql.DB
+
+// Db to create the singleton database connection
+func Db() (*sql.DB, error) {
+	if database != nil {
+		return database, nil
+	}
+	if db, err := connect(); err != nil {
+		return nil, err
+	} else {
+		database = db
+		return database, nil
+	}
+}
+
+// connect is to Connect to the database
+func connect() (*sql.DB, error) {
 	host := os.Getenv("DB_HOST")
 	port, _ := strconv.Atoi(os.Getenv("DB_PORT"))
 	user := os.Getenv("DB_USER")
