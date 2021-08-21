@@ -120,6 +120,31 @@ func GetSong(id string) (*Song, errors.Error) {
 	}
 }
 
+// UpdateSong is a function to update a song in the database by id
+func UpdateSong(id string, year uint16, performer string, genre *string, duration *uint16) errors.Error {
+	db, err := database.Db()
+	if err != nil {
+		fmt.Println(err)
+		return errors.NewInternalServerError("Something went wrong.")
+	}
+
+	statement := `UPDATE songs SET year = $2, performer = $3, genre = $4, duration = $5 WHERE id = $1`
+	result, err := db.Exec(statement, id, year, performer, genre, duration)
+	if err != nil {
+		fmt.Println(err)
+		return errors.NewInternalServerError("Something went wrong.")
+	}
+
+	if count, err := result.RowsAffected(); err != nil {
+		fmt.Println(err)
+		return errors.NewInternalServerError("Something went wrong.")
+	} else if count < 1 {
+		return errors.NewNotFound(fmt.Sprintf("Song with id %s not found.", id))
+	}
+
+	return nil
+}
+
 // exists is a function to check the existence of the song in the database
 func exists(id string) (bool, errors.Error) {
 	db, err := database.Db()
