@@ -2,6 +2,7 @@ package songs
 
 import (
 	"github.com/erikrios/open-music-api-go-language/src/api/songs/payloads"
+	"github.com/erikrios/open-music-api-go-language/src/errors"
 	inMemoryService "github.com/erikrios/open-music-api-go-language/src/services/inmemory/songs"
 	service "github.com/erikrios/open-music-api-go-language/src/services/postgresql/songs"
 	"github.com/erikrios/open-music-api-go-language/src/validation/songs"
@@ -73,10 +74,20 @@ func getSongs(c *fiber.Ctx) error {
 
 func getSong(c *fiber.Ctx) error {
 	id := c.Params("id")
-	song, err := inMemoryService.GetSong(id)
+	song, err := service.GetSong(id)
 	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"status":  "fail",
+		var status string
+		var statusCode uint16
+		switch err.(type) {
+		case errors.NotFound:
+			status = "fail"
+			statusCode = fiber.StatusNotFound
+		case errors.InternalServerError:
+			status = "error"
+			statusCode = fiber.StatusInternalServerError
+		}
+		return c.Status(int(statusCode)).JSON(fiber.Map{
+			"status":  status,
 			"message": err.Message(),
 		})
 	}
