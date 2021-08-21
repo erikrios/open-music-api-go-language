@@ -1,6 +1,9 @@
 package errors
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"fmt"
+	"github.com/gofiber/fiber/v2"
+)
 
 // Error an interface to define the Response Error
 type Error interface {
@@ -20,6 +23,7 @@ func ErrorHandler(err Error, c *fiber.Ctx) error {
 	case NotFound:
 		statusCode = fiber.StatusNotFound
 	default:
+		fmt.Println(err.Message())
 		status = "error"
 		statusCode = fiber.StatusInternalServerError
 	}
