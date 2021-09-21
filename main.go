@@ -42,7 +42,7 @@ func main() {
 	}
 
 	if db, err := database.Db(); err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	} else {
 		fmt.Printf("%p", db)
 	}
@@ -56,7 +56,7 @@ func main() {
 	url := os.Getenv("SERVER_URL")
 
 	if err := app.Listen(url); err != nil {
-		fmt.Println("Failed to start the server:", err)
+		log.Fatal("Failed to start the server:", err)
 	} else {
 		fmt.Println("Server starting on", url)
 	}
