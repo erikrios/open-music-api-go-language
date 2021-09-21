@@ -10,18 +10,18 @@ import (
 )
 
 type Song struct {
-	Id         string  `json:"id"`
-	Title      string  `json:"title"`
-	Year       uint16  `json:"year"`
-	Performer  string  `json:"performer"`
-	Genre      *string `json:"genre"`
-	Duration   *uint16 `json:"duration"`
-	InsertedAt string  `json:"insertedAt"`
-	UpdatedAt  string  `json:"updatedAt"`
+	Id         string
+	Title      string
+	Year       uint16
+	Performer  string
+	Genre      sql.NullString
+	Duration   sql.NullInt16
+	InsertedAt string
+	UpdatedAt  string
 }
 
 // AddSong is a function to add a song into the database
-func AddSong(title string, year uint16, performer string, genre *string, duration *uint16) (string, errors.Error) {
+func AddSong(title string, year uint16, performer string, genre sql.NullString, duration sql.NullInt16) (string, errors.Error) {
 	nanoidId, _ := nanoid.Generate(nanoid.DefaultAlphabet, 16)
 	id := fmt.Sprintf("song-%s", nanoidId)
 	insertedAt := time.Now().Format(time.RFC3339)
@@ -112,7 +112,7 @@ func GetSong(id string) (*Song, errors.Error) {
 }
 
 // UpdateSong is a function to update a song in the database by id
-func UpdateSong(id string, title string, year uint16, performer string, genre *string, duration *uint16) errors.Error {
+func UpdateSong(id string, title string, year uint16, performer string, genre sql.NullString, duration sql.NullInt16) errors.Error {
 	db, err := database.Db()
 	if err != nil {
 		return errors.NewInternalServerError("Something went wrong.")
