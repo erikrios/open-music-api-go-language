@@ -8,14 +8,14 @@ import (
 )
 
 type Song struct {
-	Id         string  `json:"id"`
-	Title      string  `json:"title"`
-	Year       uint16  `json:"year"`
-	Performer  string  `json:"performer"`
-	Genre      *string `json:"genre"`
-	Duration   *uint16 `json:"duration"`
-	InsertedAt string  `json:"insertedAt"`
-	UpdatedAt  string  `json:"updatedAt"`
+	Id         string
+	Title      string
+	Year       uint16
+	Performer  string
+	Genre      *string
+	Duration   *uint16
+	InsertedAt string
+	UpdatedAt  string
 }
 
 var songs = make([]Song, 0)
