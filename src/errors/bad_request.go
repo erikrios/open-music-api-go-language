@@ -1,6 +1,6 @@
 package errors
 
-// BadRequest a struct for 400 Response Error
+// BadRequest a struct for 400 Response ResponseError
 type BadRequest struct {
 	name       string
 	message    string
@@ -16,17 +16,17 @@ func NewBadRequest(message string) BadRequest {
 	}
 }
 
-// Name is a method to get the name of the Error
+// Name is a method to get the name of the ResponseError
 func (b BadRequest) Name() string {
 	return b.name
 }
 
-// Message is a method to get the message of the Error
-func (b BadRequest) Message() string {
+// Message is a method to get the message of the ResponseError
+func (b BadRequest) Error() string {
 	return b.message
 }
 
-// StatusCode is a method to get the status code of the Error
+// StatusCode is a method to get the status code of the ResponseError
 func (b BadRequest) StatusCode() uint16 {
 	return b.statusCode
 }

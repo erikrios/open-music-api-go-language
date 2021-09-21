@@ -44,7 +44,7 @@ func GetSongs() []Song {
 	return songs
 }
 
-func GetSong(id string) (*Song, errors.Error) {
+func GetSong(id string) (*Song, errors.ResponseError) {
 	for _, song := range songs {
 		if id == song.Id {
 			return &song, nil
@@ -53,7 +53,7 @@ func GetSong(id string) (*Song, errors.Error) {
 	return nil, errors.NewNotFound(fmt.Sprintf("Song with id %s not found.", id))
 }
 
-func UpdateSong(id string, title string, year uint16, performer string, genre *string, duration *uint16) errors.Error {
+func UpdateSong(id string, title string, year uint16, performer string, genre *string, duration *uint16) errors.ResponseError {
 	for i, song := range songs {
 		if id == song.Id {
 			updatedAt := time.Now().Format(time.RFC3339)
@@ -69,7 +69,7 @@ func UpdateSong(id string, title string, year uint16, performer string, genre *s
 	return errors.NewNotFound(fmt.Sprintf("Song with id %s not found.", id))
 }
 
-func DeleteSong(id string) errors.Error {
+func DeleteSong(id string) errors.ResponseError {
 	for i, song := range songs {
 		if id == song.Id {
 			songs = remove(songs, i)

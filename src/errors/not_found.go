@@ -1,6 +1,6 @@
 package errors
 
-// NotFound a struct for 404 Response Error
+// NotFound a struct for 404 Response ResponseError
 type NotFound struct {
 	name       string
 	message    string
@@ -16,17 +16,17 @@ func NewNotFound(message string) NotFound {
 	}
 }
 
-// Name is a method to get the name of the Error
+// Name is a method to get the name of the ResponseError
 func (b NotFound) Name() string {
 	return b.name
 }
 
-// Message is a method to get the message of the Error
-func (b NotFound) Message() string {
+// Message is a method to get the message of the ResponseError
+func (b NotFound) Error() string {
 	return b.message
 }
 
-// StatusCode is a method to get the status code of the Error
+// StatusCode is a method to get the status code of the ResponseError
 func (b NotFound) StatusCode() uint16 {
 	return b.statusCode
 }

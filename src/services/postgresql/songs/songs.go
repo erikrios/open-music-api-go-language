@@ -21,7 +21,7 @@ type Song struct {
 }
 
 // AddSong is a function to add a song into the database
-func AddSong(title string, year uint16, performer string, genre sql.NullString, duration sql.NullInt16) (string, errors.Error) {
+func AddSong(title string, year uint16, performer string, genre sql.NullString, duration sql.NullInt16) (string, errors.ResponseError) {
 	nanoidId, _ := nanoid.Generate(nanoid.DefaultAlphabet, 16)
 	id := fmt.Sprintf("song-%s", nanoidId)
 	insertedAt := time.Now().Format(time.RFC3339)
@@ -43,7 +43,7 @@ func AddSong(title string, year uint16, performer string, genre sql.NullString, 
 }
 
 // GetSongs is a function to get songs in the database
-func GetSongs() ([]Song, errors.Error) {
+func GetSongs() ([]Song, errors.ResponseError) {
 	db, err := database.Db()
 	if err != nil {
 		return nil, errors.NewInternalServerError("Something went wrong.")
@@ -79,7 +79,7 @@ func GetSongs() ([]Song, errors.Error) {
 }
 
 // GetSong is a function to get a song in the database by id
-func GetSong(id string) (*Song, errors.Error) {
+func GetSong(id string) (*Song, errors.ResponseError) {
 	db, err := database.Db()
 	if err != nil {
 		return nil, errors.NewInternalServerError("Something went wrong.")
@@ -112,7 +112,7 @@ func GetSong(id string) (*Song, errors.Error) {
 }
 
 // UpdateSong is a function to update a song in the database by id
-func UpdateSong(id string, title string, year uint16, performer string, genre sql.NullString, duration sql.NullInt16) errors.Error {
+func UpdateSong(id string, title string, year uint16, performer string, genre sql.NullString, duration sql.NullInt16) errors.ResponseError {
 	db, err := database.Db()
 	if err != nil {
 		return errors.NewInternalServerError("Something went wrong.")
@@ -136,7 +136,7 @@ func UpdateSong(id string, title string, year uint16, performer string, genre sq
 }
 
 // DeleteSong is a function to delete a song in the database by id
-func DeleteSong(id string) errors.Error {
+func DeleteSong(id string) errors.ResponseError {
 	db, err := database.Db()
 	if err != nil {
 		return errors.NewInternalServerError("Something went wrong.")
@@ -158,7 +158,7 @@ func DeleteSong(id string) errors.Error {
 }
 
 // exists is a function to check the existence of the song in the database
-func exists(id string) (bool, errors.Error) {
+func exists(id string) (bool, errors.ResponseError) {
 	db, err := database.Db()
 	if err != nil {
 		return false, errors.NewInternalServerError("Something went wrong.")
