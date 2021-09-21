@@ -30,19 +30,6 @@ func postSongs(c *fiber.Ctx) error {
 	title, year, performer := payload.Title, payload.Year, payload.Performer
 	genre, duration := convert.ToNullString(payload.Genre), convert.ToNullInt16(payload.Duration)
 
-	if payload.Genre == nil {
-		genre.Valid = false
-	} else {
-		genre.Valid = true
-		genre.String = *payload.Genre
-	}
-	if payload.Duration == nil {
-		duration.Valid = false
-	} else {
-		duration.Valid = true
-		duration.Int16 = int16(*payload.Duration)
-	}
-
 	id, err := service.AddSong(title, year, performer, genre, duration)
 	if err != nil {
 		return errors.ErrorHandler(err, c)
