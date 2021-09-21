@@ -1,7 +1,9 @@
 package songs
 
 import (
+	"database/sql"
 	"github.com/erikrios/open-music-api-go-language/src/api/songs/payloads"
+	"github.com/erikrios/open-music-api-go-language/src/api/songs/response"
 	"github.com/erikrios/open-music-api-go-language/src/errors"
 	service "github.com/erikrios/open-music-api-go-language/src/services/postgresql/songs"
 	"github.com/gofiber/fiber/v2"
@@ -25,7 +27,23 @@ func postSongs(c *fiber.Ctx) error {
 		})
 	}
 
-	id, err := service.AddSong(payload.Title, payload.Year, payload.Performer, payload.Genre, payload.Duration)
+	title, year, performer := payload.Title, payload.Year, payload.Performer
+	genre, duration := sql.NullString{}, sql.NullInt16{}
+
+	if payload.Genre == nil {
+		genre.Valid = false
+	} else {
+		genre.Valid = true
+		genre.String = *payload.Genre
+	}
+	if payload.Duration == nil {
+		duration.Valid = false
+	} else {
+		duration.Valid = true
+		duration.Int16 = int16(*payload.Duration)
+	}
+
+	id, err := service.AddSong(title, year, performer, genre, duration)
 	if err != nil {
 		return errors.ErrorHandler(err, c)
 	}
@@ -40,7 +58,7 @@ func postSongs(c *fiber.Ctx) error {
 }
 
 func getSongs(c *fiber.Ctx) error {
-	results := make([]fiber.Map, 0)
+	results := make([]response.Simple, 0)
 
 	allSongs, err := service.GetSongs()
 	if err != nil {
@@ -48,10 +66,10 @@ func getSongs(c *fiber.Ctx) error {
 	}
 
 	for _, song := range allSongs {
-		result := fiber.Map{
-			"id":        song.Id,
-			"title":     song.Title,
-			"performer": song.Performer,
+		result := response.Simple{
+			Id:        song.Id,
+			Title:     song.Title,
+			Performer: song.Performer,
 		}
 		results = append(results, result)
 	}
@@ -69,10 +87,35 @@ func getSong(c *fiber.Ctx) error {
 	if err != nil {
 		return errors.ErrorHandler(err, c)
 	}
+
+	var genre = new(string)
+	var duration = new(uint16)
+
+	if song.Genre.Valid {
+		*genre = song.Genre.String
+	} else {
+		genre = nil
+	}
+
+	if song.Duration.Valid {
+		*duration = uint16(song.Duration.Int16)
+	} else {
+		duration = nil
+	}
+
 	return c.JSON(fiber.Map{
 		"status": "success",
 		"data": fiber.Map{
-			"song": song,
+			"song": response.Full{
+				Id:         song.Id,
+				Title:      song.Title,
+				Year:       song.Year,
+				Performer:  song.Performer,
+				Genre:      genre,
+				Duration:   duration,
+				InsertedAt: song.InsertedAt,
+				UpdatedAt:  song.UpdatedAt,
+			},
 		},
 	})
 }
@@ -95,7 +138,23 @@ func putSong(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := service.UpdateSong(id, payload.Title, payload.Year, payload.Performer, payload.Genre, payload.Duration); err != nil {
+	title, year, performer := payload.Title, payload.Year, payload.Performer
+	genre, duration := sql.NullString{}, sql.NullInt16{}
+
+	if payload.Genre == nil {
+		genre.Valid = false
+	} else {
+		genre.Valid = true
+		genre.String = *payload.Genre
+	}
+	if payload.Duration == nil {
+		duration.Valid = false
+	} else {
+		duration.Valid = true
+		duration.Int16 = int16(*payload.Duration)
+	}
+
+	if err := service.UpdateSong(id, title, year, performer, genre, duration); err != nil {
 		return errors.ErrorHandler(err, c)
 	}
 
