@@ -3,10 +3,10 @@ package songs
 import "github.com/gofiber/fiber/v2"
 
 func Routes(a *fiber.App) {
-	router := a.Group("/")
-	router.Post("/songs", postSongs)
-	router.Get("/songs", getSongs)
-	router.Get("/songs/:id", getSong)
-	router.Put("/songs/:id", putSong)
-	router.Delete("/songs/:id", deleteSong)
+	router := a.Group("/songs")
+	router.Post("/", postSongs)
+	router.Get("/", getSongs)
+	router.Get("/:id", getSong)
+	router.Put("/:id", putSong)
+	router.Delete("/:id", deleteSong)
 }
