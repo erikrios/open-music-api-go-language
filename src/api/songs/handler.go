@@ -4,8 +4,8 @@ import (
 	"github.com/erikrios/open-music-api-go-language/src/api/songs/payloads"
 	"github.com/erikrios/open-music-api-go-language/src/errors"
 	service "github.com/erikrios/open-music-api-go-language/src/services/postgresql/songs"
-	"github.com/erikrios/open-music-api-go-language/src/validation/songs"
 	"github.com/gofiber/fiber/v2"
+	"gopkg.in/validator.v2"
 )
 
 func postSongs(c *fiber.Ctx) error {
@@ -18,12 +18,10 @@ func postSongs(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := songs.Validate(*payload); err != nil {
+	if err := validator.Validate(*payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status": "fail",
-			"message": fiber.Map{
-				"err": err,
-			},
+			"status":  "fail",
+			"message": err.Error(),
 		})
 	}
 
@@ -90,12 +88,10 @@ func putSong(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := songs.Validate(*payload); err != nil {
+	if err := validator.Validate(*payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status": "fail",
-			"message": fiber.Map{
-				"err": err,
-			},
+			"status":  "fail",
+			"message": err.Error(),
 		})
 	}
 

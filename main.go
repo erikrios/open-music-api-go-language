@@ -6,6 +6,7 @@ import (
 	"github.com/erikrios/open-music-api-go-language/src/api/songs"
 	"github.com/erikrios/open-music-api-go-language/src/database"
 	"github.com/erikrios/open-music-api-go-language/src/middleware"
+	"github.com/erikrios/open-music-api-go-language/src/validation"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"log"
@@ -49,6 +50,7 @@ func main() {
 
 	app := fiber.New()
 
+	validation.Init()
 	middleware.Init(app)
 	home.Routes(app)
 	songs.Routes(app)
