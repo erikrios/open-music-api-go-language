@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3ce010af-2aab-47cf-a98d-8c15136b5314",
+		"_postman_id": "f2d901bf-348a-4110-bd2c-dc0f8122bc1b",
 		"name": "OpenMusic API V1 Test",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -113,7 +113,7 @@
 							"}); \r",
 							" \r",
 							"pm.test('response Content-Type header should have application/json value', () => {\r",
-							"  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
 							"}); \r",
 							" \r",
 							"pm.test('response body should an object', () => {\r",
@@ -547,7 +547,7 @@
 							"}); \r",
 							" \r",
 							"pm.test('response Content-Type header should have application/json value', () => {\r",
-							"  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
 							"}); \r",
 							" \r",
 							"pm.test('response body should an object', () => {\r",
